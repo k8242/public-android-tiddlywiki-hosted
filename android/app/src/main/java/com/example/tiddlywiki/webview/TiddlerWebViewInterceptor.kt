@@ -137,6 +137,7 @@ class TiddlerWebViewInterceptor(
     companion object {
         const val VIRTUAL_HOST = "appassets.androidplatform.net"
         const val BOOT_URL = "https://$VIRTUAL_HOST/assets/tiddlywiki_boot.html"
+        const val JS_BRIDGE_NAME = "AndroidTiddlyBridge"
         private const val TIDDLER_PATH_PREFIX = "/recipes/default/tiddlers/"
         private const val FILES_PATH_PREFIX = "/files/"
         private const val ASSETS_PATH_PREFIX = "/assets/"

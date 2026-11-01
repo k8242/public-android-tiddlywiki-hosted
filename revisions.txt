@@ -1,12 +1,28 @@
 # Project Revisions (`main` branch)
 
 ## Table of Contents
-1. [Commit 6: Add WebView tiddlyweb interceptor and WorkManager periodic sync](#commit-6-add-webview-tiddlyweb-interceptor-and-workmanager-periodic-sync)
-2. [Commit 5: Scaffold Android app with SQLite storage and JSON/blob backup mirror](#commit-5-scaffold-android-app-with-sqlite-storage-and-jsonblob-backup-mirror)
-3. [Commit 4: Readability cleanup and convention alignment across backend servers](#commit-4-readability-cleanup-and-convention-alignment-across-backend-servers)
-4. [Commit 3: Add Go and Java tiddler sync backends and backend comparison guide](#commit-3-add-go-and-java-tiddler-sync-backends-and-backend-comparison-guide)
-5. [Commit 2: Add Python and Node.js tiddler sync backends](#commit-2-add-python-and-nodejs-tiddler-sync-backends)
-6. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+1. [Commit 7: Readability cleanup for Android KDoc, naming conventions, and resource handling](#commit-7-readability-cleanup-for-android-kdoc-naming-conventions-and-resource-handling)
+2. [Commit 6: Add WebView tiddlyweb interceptor and WorkManager periodic sync](#commit-6-add-webview-tiddlyweb-interceptor-and-workmanager-periodic-sync)
+3. [Commit 5: Scaffold Android app with SQLite storage and JSON/blob backup mirror](#commit-5-scaffold-android-app-with-sqlite-storage-and-jsonblob-backup-mirror)
+4. [Commit 4: Readability cleanup and convention alignment across backend servers](#commit-4-readability-cleanup-and-convention-alignment-across-backend-servers)
+5. [Commit 3: Add Go and Java tiddler sync backends and backend comparison guide](#commit-3-add-go-and-java-tiddler-sync-backends-and-backend-comparison-guide)
+6. [Commit 2: Add Python and Node.js tiddler sync backends](#commit-2-add-python-and-nodejs-tiddler-sync-backends)
+7. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+
+---
+
+### Commit 7: Readability cleanup for Android KDoc, naming conventions, and resource handling
+- **Date**: 2026-11-01
+- **Agent**: Antigravity
+- **Model**: Gemini 4 Argon (Medium)
+- **Branch**: `main`
+- **Summary**:
+  Refined Kotlin idioms and conventions across the Android application: implemented structural byte-array equality (`equals`/`hashCode`) on `TiddlerStorage.BlobRecord` and extracted the `JS_BRIDGE_NAME` constant in `TiddlerWebViewInterceptor` and `MainActivity`.
+- **Files Changed**:
+  - `android/app/src/main/java/com/example/tiddlywiki/data/TiddlerStorage.kt`
+  - `android/app/src/main/java/com/example/tiddlywiki/webview/TiddlerWebViewInterceptor.kt`
+  - `android/app/src/main/java/com/example/tiddlywiki/MainActivity.kt`
+  - `revisions.txt`
 
 ---
 

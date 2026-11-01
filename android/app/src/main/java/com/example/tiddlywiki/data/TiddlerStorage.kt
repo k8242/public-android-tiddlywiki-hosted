@@ -416,7 +416,15 @@ class TiddlerStorage(context: Context) :
         return result
     }
 
-    data class BlobRecord(val mimeType: String, val data: ByteArray)
+    data class BlobRecord(val mimeType: String, val data: ByteArray) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is BlobRecord) return false
+            return mimeType == other.mimeType && data.contentEquals(other.data)
+        }
+
+        override fun hashCode(): Int = 31 * mimeType.hashCode() + data.contentHashCode()
+    }
 
     companion object {
         private const val DATABASE_VERSION = 1

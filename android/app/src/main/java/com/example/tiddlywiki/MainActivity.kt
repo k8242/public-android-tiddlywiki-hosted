@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             }
             addJavascriptInterface(
                 TiddlerWebViewInterceptor.JsBridge(storage),
-                "AndroidTiddlyBridge"
+                TiddlerWebViewInterceptor.JS_BRIDGE_NAME
             )
         }
 
