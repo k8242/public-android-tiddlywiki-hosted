@@ -1,0 +1,13 @@
+{
+  "name": "hosted-tiddlywiki-js-backend",
+  "version": "1.0.0",
+  "description": "Minimal Node.js TiddlyWiki tiddler-syncing backend using built-in node:http and node:sqlite",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node --experimental-sqlite server.js"
+  }
+}

@@ -1,7 +1,24 @@
 # Project Revisions (`main` branch)
 
 ## Table of Contents
-1. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+1. [Commit 2: Add Python and Node.js tiddler sync backends](#commit-2-add-python-and-nodejs-tiddler-sync-backends)
+2. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+
+---
+
+### Commit 2: Add Python and Node.js tiddler sync backends
+- **Date**: 2026-11-01
+- **Agent**: Antigravity
+- **Model**: Gemini 4 Argon (Medium)
+- **Branch**: `main`
+- **Summary**:
+  Implemented the Python 3 (`backends/python/server.py`) and Node.js (`backends/js/server.js`) tiddler-syncing backends using standard library SQLite (`sqlite3` and `node:sqlite`) and atomic file backups (`backup/tiddlers/*.json` and `backup/blobs/<sha256>`). Aligned all method names using PEP 8 `snake_case` in Python (`init_storage`, `get_status`, `list_skinny_tiddlers`, `get_tiddler`, `put_tiddler`, `delete_tiddler`, `get_blob`, `put_blob`, `sync_batch`, `write_tiddler_backup`, `write_blob_backup`) and JavaScript `camelCase` (`initStorage`, `getStatus`, `listSkinnyTiddlers`, `getTiddler`, `putTiddler`, `deleteTiddler`, `getBlob`, `putBlob`, `syncBatch`, `writeTiddlerBackup`, `writeBlobBackup`). Added an automated integration test suite (`backends/python/test_server.py`).
+- **Files Changed**:
+  - `backends/python/server.py`
+  - `backends/python/test_server.py`
+  - `backends/js/package.json`
+  - `backends/js/server.js`
+  - `revisions.txt`
 
 ---
 
