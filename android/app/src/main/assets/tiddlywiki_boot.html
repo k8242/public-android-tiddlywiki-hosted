@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hosted TiddlyWiki (Android SQLite Bridge)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; margin: 1.5rem; color: #1f2937; }
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.75rem; }
+    .card { border: 1px solid #d1d5db; border-radius: 8px; padding: 1rem; margin-top: 1rem; }
+    input, textarea { width: 100%; box-sizing: border-box; margin-top: 0.5rem; padding: 0.5rem; }
+    button { margin-top: 0.5rem; padding: 0.5rem 1rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Hosted TiddlyWiki</h2>
+    <span id="sync-status">Loading skinny index...</span>
+  </header>
+
+  <section class="card">
+    <h3>New / Edit Tiddler</h3>
+    <input id="tiddler-title" placeholder="Tiddler title (e.g. GettingStarted)" />
+    <input id="tiddler-tags" placeholder="Tags (space-separated)" />
+    <textarea id="tiddler-text" rows="5" placeholder="Tiddler content..."></textarea>
+    <button onclick="saveTiddler()">Save to Local SQLite</button>
+  </section>
+
+  <section id="tiddler-list"></section>
+
+  <script>
+    /**
+     * Bridges TiddlyWiki's tiddlyweb syncadaptor contract to Android's local SQLite
+     * interceptor (`https://appassets.androidplatform.net`) and `AndroidTiddlyBridge`.
+     */
+    async function loadSkinnyTiddlers() {
+      const res = await fetch('/recipes/default/tiddlers.json');
+      const skinnyList = await res.json();
+      document.getElementById('sync-status').textContent =
+        `${skinnyList.length} tiddler(s) in local SQLite`;
+
+      const container = document.getElementById('tiddler-list');
+      container.innerHTML = '';
+      for (const item of skinnyList) {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <strong>${item.title}</strong> <small>(rev ${item.revision})</small>
+          <div><button onclick="openTiddler('${encodeURIComponent(item.title)}')">Load Full Text</button>
+          <button onclick="removeTiddler('${encodeURIComponent(item.title)}')">Delete</button></div>
+          <pre id="body-${encodeURIComponent(item.title)}"></pre>
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    async function openTiddler(encodedTitle) {
+      const res = await fetch(`/recipes/default/tiddlers/${encodedTitle}`);
+      const full = await res.json();
+      document.getElementById(`body-${encodedTitle}`).textContent =
+        full.text || full._canonical_uri || '';
+    }
+
+    async function saveTiddler() {
+      const title = document.getElementById('tiddler-title').value.trim();
+      if (!title) return;
+      const payload = {
+        title,
+        tags: document.getElementById('tiddler-tags').value.trim(),
+        text: document.getElementById('tiddler-text').value,
+        type: 'text/vnd.tiddlywiki'
+      };
+      if (window.AndroidTiddlyBridge) {
+        window.AndroidTiddlyBridge.putTiddler(title, JSON.stringify(payload));
+      } else {
+        await fetch(`/recipes/default/tiddlers/${encodeURIComponent(title)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }
+      await loadSkinnyTiddlers();
+    }
+
+    async function removeTiddler(encodedTitle) {
+      const title = decodeURIComponent(encodedTitle);
+      if (window.AndroidTiddlyBridge) {
+        window.AndroidTiddlyBridge.deleteTiddler(title);
+      } else {
+        await fetch(`/bags/default/tiddlers/${encodedTitle}`, { method: 'DELETE' });
+      }
+      await loadSkinnyTiddlers();
+    }
+
+    loadSkinnyTiddlers();
+  </script>
+</body>
+</html>
