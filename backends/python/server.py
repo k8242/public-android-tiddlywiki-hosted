@@ -29,6 +29,15 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = Path(os.environ.get("DATA_DIR", REPO_ROOT / "data"))
 SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schema.sql"
 
+DEFAULT_PORT = 8080
+DEFAULT_BATCH_LIMIT = 100
+DEFAULT_TIDDLER_TYPE = "text/vnd.tiddlywiki"
+DEFAULT_BAG = "default"
+DEFAULT_RECIPE = "default"
+TIDDLYWIKI_VERSION = "5.3.5"
+CANONICAL_URI_PREFIX = "files/"
+GZIP_MIN_BYTES = 512
+
 CORE_TIDDLER_KEYS = frozenset({
     "title",
     "revision",
@@ -65,15 +74,15 @@ class TiddlerStore:
             conn.executescript(schema_sql)
 
     def get_status(self) -> dict[str, Any]:
-        """Return tiddlyweb server status metadata."""
+        """Return tiddlyweb server status metadata (aligned with getStatus / GetStatus)."""
         return {
             "username": "user",
-            "space": {"recipe": "default"},
-            "tiddlywiki_version": "5.3.5",
+            "space": {"recipe": DEFAULT_RECIPE},
+            "tiddlywiki_version": TIDDLYWIKI_VERSION,
         }
 
     def list_skinny_tiddlers(self) -> list[dict[str, Any]]:
-        """Return all non-deleted tiddlers without the heavy `text` field."""
+        """Return all non-deleted tiddlers without `text` (aligned with listSkinnyTiddlers)."""
         with self._connect() as conn:
             rows = conn.execute(
                 """
@@ -86,7 +95,7 @@ class TiddlerStore:
         return [self._row_to_tiddler(row, include_text=False) for row in rows]
 
     def get_tiddler(self, title: str) -> dict[str, Any] | None:
-        """Fetch a single full tiddler (including `text`) by title."""
+        """Fetch a single full tiddler by title (aligned with getTiddler / GetTiddler)."""
         with self._connect() as conn:
             row = conn.execute(
                 """
@@ -101,18 +110,19 @@ class TiddlerStore:
         return self._row_to_tiddler(row, include_text=True)
 
     def put_tiddler(self, title: str, payload: dict[str, Any]) -> int:
-        """Upsert a tiddler in SQLite and write its human-readable JSON backup."""
+        """Upsert a tiddler in SQLite and write its JSON backup (aligned with putTiddler)."""
         now_tw = self._current_tw_timestamp()
         modified = str(payload.get("modified") or now_tw)
-        content_type = str(payload.get("type") or "text/vnd.tiddlywiki")
+        content_type = str(payload.get("type") or DEFAULT_TIDDLER_TYPE)
         text = payload.get("text")
         extra_fields = {
             k: v for k, v in payload.items() if k not in CORE_TIDDLER_KEYS
         }
         canonical_uri = extra_fields.get("_canonical_uri", "")
         blob_hash = (
-            canonical_uri.removeprefix("files/")
-            if isinstance(canonical_uri, str) and canonical_uri.startswith("files/")
+            canonical_uri.removeprefix(CANONICAL_URI_PREFIX)
+            if isinstance(canonical_uri, str)
+            and canonical_uri.startswith(CANONICAL_URI_PREFIX)
             else payload.get("blob_hash")
         )
         fields_json = json.dumps(extra_fields, sort_keys=True)

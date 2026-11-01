@@ -40,6 +40,14 @@ import java.util.Set;
  */
 public final class TiddlyServer {
 
+    private static final int DEFAULT_PORT = 8080;
+    private static final int DEFAULT_BATCH_LIMIT = 100;
+    private static final String DEFAULT_TIDDLER_TYPE = "text/vnd.tiddlywiki";
+    private static final String DEFAULT_BAG = "default";
+    private static final String DEFAULT_RECIPE = "default";
+    private static final String TIDDLYWIKI_VERSION = "5.3.5";
+    private static final String CANONICAL_URI_PREFIX = "files/";
+
     private static final Set<String> CORE_TIDDLER_KEYS = Set.of(
             "title", "revision", "modified", "type", "text", "bag");
 
@@ -86,12 +94,12 @@ public final class TiddlyServer {
         }
     }
 
-    /** Return tiddlyweb server status metadata. */
+    /** Return tiddlyweb server status metadata (aligned with GetStatus / get_status). */
     public Map<String, Object> getStatus() {
         return Map.of(
                 "username", "user",
-                "space", Map.of("recipe", "default"),
-                "tiddlywiki_version", "5.3.5");
+                "space", Map.of("recipe", DEFAULT_RECIPE),
+                "tiddlywiki_version", TIDDLYWIKI_VERSION);
     }
 
     /** Return all non-deleted tiddlers omitting the heavy {@code text} field. */

@@ -23,6 +23,15 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_DATA_DIR = process.env.DATA_DIR || path.join(REPO_ROOT, 'data');
 const SCHEMA_PATH = path.resolve(__dirname, '..', 'schema.sql');
 
+const DEFAULT_PORT = 8080;
+const DEFAULT_BATCH_LIMIT = 100;
+const DEFAULT_TIDDLER_TYPE = 'text/vnd.tiddlywiki';
+const DEFAULT_BAG = 'default';
+const DEFAULT_RECIPE = 'default';
+const TIDDLYWIKI_VERSION = '5.3.5';
+const CANONICAL_URI_PREFIX = 'files/';
+const GZIP_MIN_BYTES = 512;
+
 const CORE_TIDDLER_KEYS = new Set([
   'title',
   'revision',
@@ -51,12 +60,12 @@ export class TiddlerStore {
     this.db.exec(schemaSql);
   }
 
-  /** Return tiddlyweb server status metadata. */
+  /** Return tiddlyweb server status metadata (aligned with GetStatus / get_status). */
   getStatus() {
     return {
       username: 'user',
-      space: { recipe: 'default' },
-      tiddlywiki_version: '5.3.5',
+      space: { recipe: DEFAULT_RECIPE },
+      tiddlywiki_version: TIDDLYWIKI_VERSION,
     };
   }
 
@@ -85,7 +94,7 @@ export class TiddlerStore {
   /** Upsert a tiddler in SQLite and write its human-readable JSON backup. */
   putTiddler(title, payload) {
     const modified = String(payload.modified || this.#currentTwTimestamp());
-    const type = String(payload.type || 'text/vnd.tiddlywiki');
+    const type = String(payload.type || DEFAULT_TIDDLER_TYPE);
     const text = payload.text ?? null;
 
     const extraFields = {};
@@ -97,8 +106,9 @@ export class TiddlerStore {
 
     const canonicalUri = extraFields._canonical_uri || '';
     const blobHash =
-      typeof canonicalUri === 'string' && canonicalUri.startsWith('files/')
-        ? canonicalUri.slice('files/'.length)
+      typeof canonicalUri === 'string' &&
+      canonicalUri.startsWith(CANONICAL_URI_PREFIX)
+        ? canonicalUri.slice(CANONICAL_URI_PREFIX.length)
         : (payload.blob_hash ?? null);
     const fieldsJson = JSON.stringify(extraFields);
 

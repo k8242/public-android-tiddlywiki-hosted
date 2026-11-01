@@ -26,6 +26,17 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+const (
+	defaultPort        = "8080"
+	defaultBatchLimit  = 100
+	defaultTiddlerType = "text/vnd.tiddlywiki"
+	defaultBag         = "default"
+	defaultRecipe      = "default"
+	tiddlyWikiVersion  = "5.3.5"
+	canonicalURIPrefix = "files/"
+	gzipMinBytes       = 512
+)
+
 var coreTiddlerKeys = map[string]bool{
 	"title":    true,
 	"revision": true,
@@ -101,12 +112,12 @@ func (s *TiddlerStore) InitStorage() error {
 	return err
 }
 
-// GetStatus returns tiddlyweb server status metadata.
+// GetStatus returns tiddlyweb server status metadata (aligned with getStatus / get_status).
 func (s *TiddlerStore) GetStatus() map[string]any {
 	return map[string]any{
 		"username":           "user",
-		"space":              map[string]any{"recipe": "default"},
-		"tiddlywiki_version": "5.3.5",
+		"space":              map[string]any{"recipe": defaultRecipe},
+		"tiddlywiki_version": tiddlyWikiVersion,
 	}
 }
 
