@@ -1,10 +1,28 @@
 # Project Revisions (`main` branch)
 
 ## Table of Contents
-1. [Commit 4: Readability cleanup and convention alignment across backend servers](#commit-4-readability-cleanup-and-convention-alignment-across-backend-servers)
-2. [Commit 3: Add Go and Java tiddler sync backends and backend comparison guide](#commit-3-add-go-and-java-tiddler-sync-backends-and-backend-comparison-guide)
-3. [Commit 2: Add Python and Node.js tiddler sync backends](#commit-2-add-python-and-nodejs-tiddler-sync-backends)
-4. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+1. [Commit 5: Scaffold Android app with SQLite storage and JSON/blob backup mirror](#commit-5-scaffold-android-app-with-sqlite-storage-and-jsonblob-backup-mirror)
+2. [Commit 4: Readability cleanup and convention alignment across backend servers](#commit-4-readability-cleanup-and-convention-alignment-across-backend-servers)
+3. [Commit 3: Add Go and Java tiddler sync backends and backend comparison guide](#commit-3-add-go-and-java-tiddler-sync-backends-and-backend-comparison-guide)
+4. [Commit 2: Add Python and Node.js tiddler sync backends](#commit-2-add-python-and-nodejs-tiddler-sync-backends)
+5. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+
+---
+
+### Commit 5: Scaffold Android app with SQLite storage and JSON/blob backup mirror
+- **Date**: 2026-11-01
+- **Agent**: Antigravity
+- **Model**: Gemini 4 Argon (Medium)
+- **Branch**: `main`
+- **Summary**:
+  Scaffolded the standalone Android project (`android/`) and implemented `TiddlerStorage.kt` (`SQLiteOpenHelper` in WAL mode) using the same `tiddlers` and `blobs` tables, atomic JSON/binary file backup layout (`filesDir/data/backup/`), and aligned method names (`initStorage`, `getStatus`, `listSkinnyTiddlers`, `getTiddler`, `putTiddler`, `deleteTiddler`, `getBlob`, `putBlob`, `syncBatch`, `writeTiddlerBackup`, `writeBlobBackup`) as the four backend servers, plus offline `dirty = 1` tracking for `WorkManager`.
+- **Files Changed**:
+  - `android/settings.gradle.kts`
+  - `android/build.gradle.kts`
+  - `android/app/build.gradle.kts`
+  - `android/app/src/main/AndroidManifest.xml`
+  - `android/app/src/main/java/com/example/tiddlywiki/data/TiddlerStorage.kt`
+  - `revisions.txt`
 
 ---
 
