@@ -1,0 +1,19 @@
+# Project Revisions (`main` branch)
+
+## Table of Contents
+1. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+
+---
+
+### Commit 1: Initialize repository, shared SQLite schema, and documentation
+- **Date**: 2026-11-01
+- **Agent**: Antigravity
+- **Model**: Gemini 4 Argon (Medium)
+- **Branch**: `main`
+- **Summary**:
+  Established the foundational repository layout, `.gitignore` rules isolating `/data/` from `main` (reserved for the `private_data` branch), the canonical SQLite schema (`backends/schema.sql`) for both `tiddlers` and `blobs` tables in WAL mode, and `README.md` documenting the dual-storage architecture and aligned method naming conventions across JS, Java, Go, and Python.
+- **Files Changed**:
+  - `.gitignore`
+  - `README.md`
+  - `backends/schema.sql`
+  - `revisions.txt`

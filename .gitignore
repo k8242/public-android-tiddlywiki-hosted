@@ -1,0 +1,29 @@
+# Data directory is tracked exclusively on the private_data branch
+/data/
+
+# OS and Editor files
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Node.js
+node_modules/
+
+# Go
+backends/go/tiddly-server
+
+# Java / Gradle / Android
+.gradle/
+build/
+*/build/
+*/*/build/
+local.properties
+*.apk
+*.aab
+*.class
