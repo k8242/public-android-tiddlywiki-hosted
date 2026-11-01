@@ -1,8 +1,26 @@
 # Project Revisions (`main` branch)
 
 ## Table of Contents
-1. [Commit 2: Add Python and Node.js tiddler sync backends](#commit-2-add-python-and-nodejs-tiddler-sync-backends)
-2. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+1. [Commit 3: Add Go and Java tiddler sync backends and backend comparison guide](#commit-3-add-go-and-java-tiddler-sync-backends-and-backend-comparison-guide)
+2. [Commit 2: Add Python and Node.js tiddler sync backends](#commit-2-add-python-and-nodejs-tiddler-sync-backends)
+3. [Commit 1: Initialize repository, shared SQLite schema, and documentation](#commit-1-initialize-repository-shared-sqlite-schema-and-documentation)
+
+---
+
+### Commit 3: Add Go and Java tiddler sync backends and backend comparison guide
+- **Date**: 2026-11-01
+- **Agent**: Antigravity
+- **Model**: Gemini 4 Argon (Medium)
+- **Branch**: `main`
+- **Summary**:
+  Implemented the Go 1.22+ (`backends/go/main.go`) and Java 21 / Javalin 6 (`backends/java/.../TiddlyServer.java`) tiddler-syncing backends backed by SQLite WAL (`tiddlywiki.db`) and atomic JSON/binary file backups (`backup/tiddlers/` and `backup/blobs/`). Aligned method names using Go `PascalCase` (`InitStorage`, `GetStatus`, `ListSkinnyTiddlers`, `GetTiddler`, `PutTiddler`, `DeleteTiddler`, `GetBlob`, `PutBlob`, `SyncBatch`, `WriteTiddlerBackup`, `WriteBlobBackup`) and Java `camelCase`. Added `docs/BACKEND_COMPARISON.md` detailing how concurrency & SQLite write serialization, dynamic JSON field handling, SQLite driver packaging, and HTTP Gzip/binary streaming differ across Node.js, Java, Go, and Python.
+- **Files Changed**:
+  - `backends/go/go.mod`
+  - `backends/go/main.go`
+  - `backends/java/build.gradle.kts`
+  - `backends/java/src/main/java/com/example/tiddlywiki/server/TiddlyServer.java`
+  - `docs/BACKEND_COMPARISON.md`
+  - `revisions.txt`
 
 ---
 
